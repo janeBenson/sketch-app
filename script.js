@@ -1,12 +1,29 @@
 function addColor() {
-	const rgb = getRandomColor()
-	this.style.backgroundColor = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`
+	let rgb
+	if (!this.style.backgroundColor) {
+		rgb = getRandomColor()
+		this.dataset.originalColor = rgb
+		this.dataset.passes = 1
+	} else {
+		this.dataset.passes++
+		const parsedOriginalColor = parseRGB(this.dataset.originalColor)
+		const parsedNewColor = parsedOriginalColor.map((n) => n - (this.dataset.passes - 1) * n * 0.1)
+		rgb = `rgb(${parsedNewColor[0]},${parsedNewColor[1]},${parsedNewColor[2]})`
+	}
+	this.style.backgroundColor = rgb
 }
 function getRandomColor() {
-	return [getRandomInt(0, 255), getRandomInt(0, 255), getRandomInt(0, 255)]
+	return `rgb(${getRandomInt(0, 255)}, ${getRandomInt(0, 255)}, ${getRandomInt(0, 255)})`
 }
 function getRandomInt(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min)
+}
+function parseRGB(val) {
+	const rgb = val
+		.slice(4, -1)
+		.split(',')
+		.map((el) => parseInt(el))
+	return rgb
 }
 
 function createElement(tag, className) {
