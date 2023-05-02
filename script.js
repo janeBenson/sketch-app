@@ -33,7 +33,7 @@ function createElement(tag, className) {
 }
 
 function addHoverEffect() {
-	const gridNodes = document.querySelectorAll('.row')
+	const gridNodes = document.querySelectorAll('.cell')
 	gridNodes.forEach((el) => {
 		el.addEventListener('mouseover', addColor)
 	})
@@ -49,7 +49,7 @@ function createGrid(n = 16) {
 	for (let i = 1; i <= n; i++) {
 		const columnNode = createElement('div', 'column')
 		for (let j = 1; j <= n; j++) {
-			const rowNode = createElement('div', 'row')
+			const rowNode = createElement('div', 'cell')
 			columnNode.appendChild(rowNode)
 		}
 		containerNode.appendChild(columnNode)
