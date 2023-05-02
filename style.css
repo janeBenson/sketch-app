@@ -1,11 +1,13 @@
 body {
 	height: 100vh;
+	display: flex;
+	flex-direction: column;
 }
 .container {
+	align-self: center;
 	display: flex;
 	height: 90vh;
 	width: 90vh;
-	margin: auto;
 	border: 2px solid black;
 }
 .column {
@@ -15,5 +17,10 @@ body {
 }
 .cell {
 	flex: 1;
-	border: 1px solid gray;
+	border: 0.5px solid gray;
+}
+.menu {
+	flex: 1;
+	display: flex;
+	justify-content: center;
 }

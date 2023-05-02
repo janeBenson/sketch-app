@@ -1,3 +1,28 @@
+const resetBtn = document.querySelector('#reset-button')
+const slider = document.querySelector('#slider')
+const sliderOutput = document.querySelector('#slider-output')
+
+const defaultGridSize = 16
+
+resetBtn.addEventListener('click', () => {
+	resetSlider()
+	createGrid()
+})
+
+slider.addEventListener('input', (e) => {
+	const val = e.target.value
+	updateSliderOutput(val)
+	createGrid(val)
+})
+
+function resetSlider() {
+	slider.value = defaultGridSize
+	updateSliderOutput(defaultGridSize)
+}
+
+function updateSliderOutput(val) {
+	sliderOutput.textContent = `${val} x ${val}`
+}
 function addColor() {
 	let rgb
 	if (!this.style.backgroundColor) {
@@ -39,7 +64,7 @@ function addHoverEffect() {
 	})
 }
 
-function createGrid(n = 16) {
+function createGrid(n = defaultGridSize) {
 	if (n <= 0 || n > 100) throw new Error('Number must be between 1 and 100')
 	const oldContainerNode = document.querySelector('.container')
 	if (oldContainerNode) {
@@ -54,7 +79,7 @@ function createGrid(n = 16) {
 		}
 		containerNode.appendChild(columnNode)
 	}
-	document.body.appendChild(containerNode)
+	document.body.prepend(containerNode)
 	addHoverEffect()
 }
 
