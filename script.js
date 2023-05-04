@@ -3,6 +3,14 @@ const slider = document.querySelector('#slider')
 const sliderOutput = document.querySelector('#slider-output')
 
 const defaultGridSize = 16
+let mouseDown = false
+
+document.addEventListener('mousedown', () => {
+	mouseDown = true
+})
+document.addEventListener('mouseup', () => {
+	mouseDown = false
+})
 
 resetBtn.addEventListener('click', () => {
 	resetSlider()
@@ -23,19 +31,19 @@ function resetSlider() {
 function updateSliderOutput(val) {
 	sliderOutput.textContent = `${val} x ${val}`
 }
-function addColor() {
+function addColor(target) {
 	let rgb
-	if (!this.style.backgroundColor) {
+	if (!target.style.backgroundColor) {
 		rgb = getRandomColor()
-		this.dataset.originalColor = rgb
-		this.dataset.passes = 1
+		target.dataset.originalColor = rgb
+		target.dataset.passes = 1
 	} else {
-		this.dataset.passes++
-		const parsedOriginalColor = parseRGB(this.dataset.originalColor)
-		const parsedNewColor = parsedOriginalColor.map((n) => n - (this.dataset.passes - 1) * n * 0.1)
+		target.dataset.passes++
+		const parsedOriginalColor = parseRGB(target.dataset.originalColor)
+		const parsedNewColor = parsedOriginalColor.map((n) => n - (target.dataset.passes - 1) * n * 0.1)
 		rgb = `rgb(${parsedNewColor[0]},${parsedNewColor[1]},${parsedNewColor[2]})`
 	}
-	this.style.backgroundColor = rgb
+	target.style.backgroundColor = rgb
 }
 function getRandomColor() {
 	return `rgb(${getRandomInt(0, 255)}, ${getRandomInt(0, 255)}, ${getRandomInt(0, 255)})`
@@ -60,7 +68,12 @@ function createElement(tag, className) {
 function addHoverEffect() {
 	const gridNodes = document.querySelectorAll('.cell')
 	gridNodes.forEach((el) => {
-		el.addEventListener('mouseover', addColor)
+		el.addEventListener('mouseover', (e) => {
+			if (mouseDown) addColor(e.target)
+		})
+		el.addEventListener('mousedown', (e) => {
+			addColor(e.target)
+		})
 	})
 }
 
