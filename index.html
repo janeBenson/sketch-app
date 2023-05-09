@@ -14,18 +14,26 @@
 				<input type="range" min="1" max="100" value="16" class="slider" id="slider" />
 				<p>size: <span id="slider-output">16 x 16</span></p>
 			</div>
-			<select name="color-theme" id="color-themes">
-				<option value="rainbow">Rainbow</option>
-				<option value="candy">Candy</option>
-				<option value="tropical">Tropical</option>
-				<option value="mocha">Mocha</option>
-				<option value="celestial">Celestial</option>
-				<option value="cherryBlossom">Cherry Blossom</option>
-				<option value="ocean">Ocean</option>
-				<option value="neon">Neon</option>
-				<option value="facebook">Facebook</option>
-				<option value="highlighter">Highlighter</option>
-			</select>
+			<div class="colors">
+				<select name="color-theme" id="color-themes">
+					<option value="random">Random</option>
+					<option value="candy">Candy</option>
+					<option value="tropical">Tropical</option>
+					<option value="mocha">Mocha</option>
+					<option value="celestial">Celestial</option>
+					<option value="cherryBlossom">Cherry Blossom</option>
+					<option value="ocean">Ocean</option>
+					<option value="neon">Neon</option>
+					<option value="facebook">Facebook</option>
+					<option value="highlighter">Highlighter</option>
+				</select>
+				<div id="color-theme-preview">
+					<!-- <div class="color" style="background-color: blue"></div>
+					<div class="color" style="background-color: red"></div>
+					<div class="color" style="background-color: green"></div>
+					<div class="color" style="background-color: purple"></div> -->
+				</div>
+			</div>
 			<button type="button" id="reset-button">Reset</button>
 		</div>
 	</body>

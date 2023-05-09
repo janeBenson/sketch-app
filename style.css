@@ -22,6 +22,20 @@ body {
 .menu {
 	flex: 1;
 	display: flex;
-	justify-content: center;
+	justify-content: space-around;
 	align-items: center;
+}
+
+.colors {
+	display: flex;
+	gap: 2px;
+}
+
+#color-theme-preview {
+	display: flex;
+	width: 270px;
+	height: 50px;
+}
+.color {
+	flex: 1;
 }

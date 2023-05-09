@@ -2,10 +2,12 @@ const resetBtn = document.querySelector('#reset-button')
 const slider = document.querySelector('#slider')
 const sliderOutput = document.querySelector('#slider-output')
 const colorThemesDropdown = document.querySelector('#color-themes')
+const colorThemePreview = document.querySelector('#color-theme-preview')
 
 const defaultGridSize = 16
+let chosenGridSize = defaultGridSize
 let mouseDown = false
-const defaultColorTheme = 'rainbow'
+const defaultColorTheme = 'random'
 let chosenColorTheme = defaultColorTheme
 const colorPalettes = {
 	candy: ['rgb(193,202,214)', 'rgb(212,173,207)', 'rgb(242,106,141)', 'rgb(244,156,187)', 'rgb(203,238,243)'],
@@ -30,7 +32,8 @@ resetBtn.addEventListener('click', resetGrid)
 slider.addEventListener('input', (e) => {
 	const val = e.target.value
 	updateSliderOutput(val)
-	createGrid(val)
+	chosenGridSize = val
+	createGrid()
 })
 
 colorThemesDropdown.addEventListener('change', updateColorTheme)
@@ -46,7 +49,7 @@ function updateSliderOutput(val) {
 function addColor(target) {
 	let rgb
 	if (!target.style.backgroundColor) {
-		if (chosenColorTheme === 'rainbow') {
+		if (chosenColorTheme === 'random') {
 			rgb = getRandomColor()
 		} else {
 			const colorPalette = colorPalettes[chosenColorTheme]
@@ -94,7 +97,7 @@ function addHoverEffect() {
 	})
 }
 
-function createGrid(n = defaultGridSize) {
+function createGrid(n = chosenGridSize) {
 	if (n <= 0 || n > 100) throw new Error('Number must be between 1 and 100')
 	const oldContainerNode = document.querySelector('.container')
 	if (oldContainerNode) {
@@ -114,9 +117,11 @@ function createGrid(n = defaultGridSize) {
 }
 
 function resetGrid() {
+	chosenColorTheme = defaultColorTheme
+	chosenGridSize = defaultGridSize
 	resetSlider()
 	resetColorThemesDropdown()
-	chosenColorTheme = defaultColorTheme
+	displayColorTheme()
 	createGrid()
 }
 
@@ -127,6 +132,33 @@ function resetColorThemesDropdown() {
 function updateColorTheme() {
 	chosenColorTheme = this.value
 	createGrid()
+	displayColorTheme()
+}
+
+function displayColorTheme() {
+	removeColorTheme()
+	let colorTheme
+	if (chosenColorTheme === 'random') {
+		colorTheme = []
+		for (let i = 0; i < 10; i++) {
+			colorTheme.push(getRandomColor())
+		}
+	} else {
+		colorTheme = colorPalettes[chosenColorTheme]
+	}
+	colorTheme.forEach((color) => {
+		const colorNode = createElement('div', 'color')
+		colorNode.style.backgroundColor = color
+		colorThemePreview.appendChild(colorNode)
+	})
+}
+
+function removeColorTheme() {
+	const oldColors = document.querySelectorAll('.color')
+	oldColors.forEach((colorNode) => {
+		colorThemePreview.removeChild(colorNode)
+	})
 }
 
 createGrid()
+displayColorTheme()
