@@ -158,6 +158,8 @@ function resetGrid() {
 	resetColorThemesDropdown()
 	displayColorTheme()
 	updateFadeToBlackCheckbox()
+	hideElement(customColorsSection)
+	showElement(colorThemePreview)
 	createGrid()
 }
 
@@ -169,11 +171,11 @@ function updateColorTheme() {
 	chosenColorTheme = this.value
 	if (chosenColorTheme === 'custom') {
 		// hide color theme display & show custom colors
-		customColorsSection.classList.remove('hidden')
-		colorThemePreview.classList.add('hidden')
+		showElement(customColorsSection)
+		hideElement(colorThemePreview)
 	} else {
-		customColorsSection.classList.add('hidden')
-		colorThemePreview.classList.remove('hidden')
+		hideElement(customColorsSection)
+		showElement(colorThemePreview)
 		displayColorTheme()
 	}
 	createGrid()
@@ -230,6 +232,13 @@ function updateCustomColorsInputs() {
 		const rgb = colorPalettes['custom'][i]
 		el.value = rgbToHex(rgb)
 	})
+}
+
+function hideElement(node) {
+	node.classList.add('hidden')
+}
+function showElement(node) {
+	node.classList.remove('hidden')
 }
 
 createGrid()
