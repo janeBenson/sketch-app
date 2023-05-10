@@ -4,6 +4,8 @@ const sliderOutput = document.querySelector('#slider-output')
 const colorThemesDropdown = document.querySelector('#color-themes')
 const colorThemePreview = document.querySelector('#color-theme-preview')
 const fadeToBlackCheckbox = document.querySelector('#fade-to-black-option')
+const customColors = document.querySelectorAll('.custom-color')
+const customColorsSection = document.querySelector('#custom-colors')
 
 const defaultGridSize = 16
 let chosenGridSize = defaultGridSize
@@ -22,6 +24,7 @@ const colorPalettes = {
 	neon: ['rgb(254,0,0)', 'rgb(253,254,2)', 'rgb(11,255,1)', 'rgb(1,30,254)', 'rgb(254,0,246)'],
 	facebook: ['rgb(0,0,0)', 'rgb(137,143,156)', 'rgb(66,103,178)'],
 	highlighter: ['rgb(140,255,50)', 'rgb(171,255,50)', 'rgb(212,255,50)', 'rgb(233,255,50)', 'rgb(253,255,50)'],
+	custom: [getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor()],
 }
 
 document.addEventListener('mousedown', () => {
@@ -44,6 +47,16 @@ colorThemesDropdown.addEventListener('change', updateColorTheme)
 fadeToBlackCheckbox.addEventListener('change', (e) => {
 	fadeToBlack = e.target.checked
 })
+
+customColors.forEach((el) => {
+	el.addEventListener('change', handleColorChange)
+})
+
+function handleColorChange() {
+	const i = this.id.slice(-1)
+	const color = hexToRgb(this.value)
+	colorPalettes['custom'][i - 1] = color
+}
 
 function resetSlider() {
 	slider.value = defaultGridSize
@@ -154,8 +167,16 @@ function resetColorThemesDropdown() {
 
 function updateColorTheme() {
 	chosenColorTheme = this.value
+	if (chosenColorTheme === 'custom') {
+		// hide color theme display & show custom colors
+		customColorsSection.classList.remove('hidden')
+		colorThemePreview.classList.add('hidden')
+	} else {
+		customColorsSection.classList.add('hidden')
+		colorThemePreview.classList.remove('hidden')
+		displayColorTheme()
+	}
 	createGrid()
-	displayColorTheme()
 }
 
 function displayColorTheme() {
@@ -187,6 +208,31 @@ function updateFadeToBlackCheckbox() {
 	fadeToBlackCheckbox.checked = fadeToBlack
 }
 
+function hexToRgb(hex) {
+	const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+	if (!result) return null
+	const rgbArr = result.map((n) => parseInt(n, 16))
+	return `rgb(${rgbArr[1]},${rgbArr[2]},${rgbArr[3]})`
+}
+
+const componentToHex = (c) => {
+	const hex = c.toString(16)
+	return hex.length == 1 ? '0' + hex : hex
+}
+
+const rgbToHex = (rgb) => {
+	;[r, g, b] = parseRGB(rgb)
+	return '#' + componentToHex(r) + componentToHex(g) + componentToHex(b)
+}
+
+function updateCustomColorsInputs() {
+	customColors.forEach((el, i) => {
+		const rgb = colorPalettes['custom'][i]
+		el.value = rgbToHex(rgb)
+	})
+}
+
 createGrid()
 displayColorTheme()
 updateFadeToBlackCheckbox()
+updateCustomColorsInputs()
