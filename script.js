@@ -178,7 +178,6 @@ function updateColorTheme() {
 		showElement(colorThemePreview)
 		displayColorTheme()
 	}
-	createGrid()
 }
 
 function displayColorTheme() {
