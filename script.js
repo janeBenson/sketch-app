@@ -27,8 +27,18 @@ const colorPalettes = {
 	custom: [getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor()],
 }
 
-const currentDesign = {
+let currentDesign = {
 	// '1-3': { originalColor, passes }
+}
+
+let savedDesigns = {
+	/*
+	designName: {
+	size: 12,
+	design: { '1-1': { originalColor, passes } }
+	}
+	
+	*/
 }
 
 document.addEventListener('mousedown', () => {
@@ -160,6 +170,7 @@ function resetGrid() {
 	chosenColorTheme = defaultColorTheme
 	chosenGridSize = defaultGridSize
 	fadeToBlack = true
+	resetCurrentDesignData()
 	resetSlider()
 	resetColorThemesDropdown()
 	displayColorTheme()
@@ -171,6 +182,16 @@ function resetGrid() {
 
 function resetColorThemesDropdown() {
 	colorThemesDropdown.value = defaultColorTheme
+}
+
+function resetCurrentDesignData() {
+	currentDesign = {}
+}
+
+function saveCurrentDesign(name) {
+	savedDesigns[name] = {}
+	savedDesigns[name].size = chosenGridSize
+	savedDesigns[name].design = currentDesign
 }
 
 function updateColorTheme() {
