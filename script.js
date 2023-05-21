@@ -27,6 +27,10 @@ const colorPalettes = {
 	custom: [getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor()],
 }
 
+const currentDesign = {
+	// '1-3': { originalColor, passes }
+}
+
 document.addEventListener('mousedown', () => {
 	mouseDown = true
 })
@@ -71,19 +75,20 @@ function addColor(target) {
 	// first pass
 	if (!target.style.backgroundColor) {
 		rgb = getColor(chosenColorTheme)
-		target.dataset.originalColor = rgb
-		target.dataset.passes = 1
+		currentDesign[target.id] = {}
+		currentDesign[target.id].originalColor = rgb
+		currentDesign[target.id].passes = 1
 		// subsequent passes
 	} else {
 		if (fadeToBlack) {
-			target.dataset.passes++
-			const parsedOriginalColor = parseRGB(target.dataset.originalColor)
-			const parsedNewColor = parsedOriginalColor.map((n) => n - (target.dataset.passes - 1) * n * 0.1)
+			currentDesign[target.id].passes++
+			const parsedOriginalColor = parseRGB(currentDesign[target.id].originalColor)
+			const parsedNewColor = parsedOriginalColor.map((n) => n - (currentDesign[target.id].passes - 1) * n * 0.1)
 			rgb = `rgb(${parsedNewColor[0]},${parsedNewColor[1]},${parsedNewColor[2]})`
 		} else {
 			rgb = getColor(chosenColorTheme)
-			target.dataset.passes = 1
-			target.dataset.originalColor = rgb
+			currentDesign[target.id].passes = 1
+			currentDesign[target.id].originalColor = rgb
 		}
 	}
 	target.style.backgroundColor = rgb
@@ -113,9 +118,10 @@ function parseRGB(val) {
 	return rgb
 }
 
-function createElement(tag, className) {
+function createElement(tag, className, id) {
 	const node = document.createElement(tag)
 	if (className) node.classList.add(className)
+	if (id) node.id = id
 	return node
 }
 
@@ -141,7 +147,7 @@ function createGrid(n = chosenGridSize) {
 	for (let i = 1; i <= n; i++) {
 		const columnNode = createElement('div', 'column')
 		for (let j = 1; j <= n; j++) {
-			const rowNode = createElement('div', 'cell')
+			const rowNode = createElement('div', 'cell', `${j}-${i}`)
 			columnNode.appendChild(rowNode)
 		}
 		containerNode.appendChild(columnNode)
